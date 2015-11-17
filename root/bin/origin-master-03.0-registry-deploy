@@ -51,4 +51,4 @@ oadm registry -n default --config /etc/origin/master/admin.kubeconfig --credenti
 
 # storage for registry
 oc volume deploymentconfigs/docker-registry --add --overwrite --name=registry-storage --mount-path=/registry \
-    --source="{'nfs':{'server': '${nfs_server}', 'path': '${nfs_mount}'}}"
+    --source="{\"nfs\":{\"server\": \"${nfs_server}\", \"path\": \"${nfs_mount}\"}}"

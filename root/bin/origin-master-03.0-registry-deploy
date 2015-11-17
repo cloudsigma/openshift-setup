@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+source ~/.os-setuprc &> /dev/null || echo "I can't read ~/.os-setuprc. Will not continue..." && exit 1
+
+# create exports
+cat << EOF > /etc/exports
+${nfs_mount} ${network_private}(rw,all_squash)
+EOF
+
+# setup export
+mkdir -p ${nfs_mount}
+chown -R nfsnobody:nfsnobody ${nfs_mount}
+chmod 770 ${nfs_mount}
+
+# start nfs systems
+systemctl enable rpcbind nfs-server nfs-lock nfs-idmap
+systemctl start rpcbind nfs-server nfs-lock nfs-idmap
+
+iptables -A OS_FIREWALL_ALLOW -p tcp -m state --state NEW -m tcp --dport 111 -j ACCEPT
+iptables -A OS_FIREWALL_ALLOW -p tcp -m state --state NEW -m tcp --dport 2049 -j ACCEPT
+iptables -A OS_FIREWALL_ALLOW -p udp -m state --state NEW -m udp --dport 111 -j ACCEPT
+iptables -A OS_FIREWALL_ALLOW -p udp -m state --state NEW -m udp --dport 2049 -j ACCEPT
+service iptables save
+
+# export
+exportfs -a
+exportfs -r
+
+# register
+cat << EOF > /tmp/storage.json
+apiVersion: "v1"
+kind: "PersistentVolume"
+metadata:
+  name: "${nfs_mount_name}" 
+spec:
+  capacity:
+    storage: "5Gi" 
+  accessModes:
+    - "ReadWriteOnce"
+  nfs: 
+    path: "${nfs_mount}" 
+    server: "${nfs_server}" 
+  persistentVolumeReclaimPolicy: "Recycle" 
+EOF
+
+oc create -f /tmp/storage.json
+rm -f /tmp/storage.json
+
+# deploy registry
+oadm registry -n default --config /etc/origin/master/admin.kubeconfig --credentials /etc/origin/master/openshift-registry.kubeconfig
+
+# storage for registry
+oc volume deploymentconfigs/docker-registry --add --overwrite --name=registry-storage --mount-path=/registry \
+    --source="{'nfs':{'server': '${nfs_server}', 'path': '${nfs_mount}'}}"

@@ -1,0 +1,28 @@
+[OSEv3:children]
+masters
+nodes
+
+
+[OSEv3:vars]
+ansible_ssh_user=root
+
+product_type=openshift
+deployment_type=origin
+
+# uncomment the following to enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/openshift/openshift-passwd'}]
+
+# default domain
+# all applicatons will be available under this domain. For example: myapp.os3.cloudsigma.com
+osm_default_subdomain=os3.cloudsigma.com
+
+
+[masters]
+host1.openshift.cloudsigma.com openshift_ip=192.168.77.11
+
+
+[nodes]
+host1.openshift.cloudsigma.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}" openshift_ip=192.168.77.11
+host2.openshift.cloudsigma.com openshift_node_labels="{'region': 'EU', 'zone': 'ZRH'}" openshift_ip=192.168.77.12
+host3.openshift.cloudsigma.com openshift_node_labels="{'region': 'EU', 'zone': 'ZRH'}" openshift_ip=192.168.77.13
+host4.openshift.cloudsigma.com openshift_node_labels="{'region': 'EU', 'zone': 'ZRH'}" openshift_ip=192.168.77.14

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+source ~/.os-setuprc &> /dev/null || echo "I can't read ~/.os-setuprc. Will not continue..." && exit 1
+
+# generate key
+ssh-keygen -b 8192 -N '' -f /root/.ssh/id_rsa
+
+# copy it
+for h in $hosts; do
+    ssh-copy-id -i /root/.ssh/id_rsa.pub $h;
+done

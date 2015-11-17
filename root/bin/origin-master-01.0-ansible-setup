@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+source ~/.os-setuprc &> /dev/null || echo "I can't read ~/.os-setuprc. Will not continue..." && exit 1
+
+# install epel
+yum -y install epel-release
+
+# disable repo by default
+sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+
+# install ansible
+yum -y --enablerepo=epel install ansible pyOpenSSL
+
+# clone ansible repo
+cd
+git clone https://github.com/openshift/openshift-ansible
+cd openshift-ansible
+
+cat << EOF
+
+If you have configured your /etc/ansible/hosts file, then we are ready to begin ansible's OpenShiftv3 installation. 
+
+Please, run:
+
+    ansible-playbook ~/openshift-ansible/playbooks/byo/config.yml
+
+To test your deployment, try:
+
+    oc get nodes
+
+EOF

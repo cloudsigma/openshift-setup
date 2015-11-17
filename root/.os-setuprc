@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# associative arrays
+declare -A host
+declare -A user
+
+
+# configuration
+## networking
+### domain to configure with
+domain='cloudsigma.com'
+
+### wild card domain
+domain_cluster="os3.${domain}"
+
+### the private network used
+network_private='192.168.77.0/24'
+
+### given the private network, the final octet of each host's IP
+### for example, if master is to be 192.168.77.11, then: [master]=11
+host=(
+    [master]=11
+    [node1]=12
+    [node2]=13
+    [node3]=14
+)
+
+### don't touch
+for h in ${host[*]}; do
+    hosts+="${network_private%.*}.${h} "
+done
+
+
+## docker
+### the docker storage device to use for permanent docker storage
+docker_persistent_storage_device='/dev/vdb'
+
+
+## auth
+### user/password information for web/console access
+user=(
+    [someuser]='omnees7TwuWuApVithFupMatyoholi'
+    [someotheruser]='AdPed3BotsEfaquicbukGacvuOlEsh'
+)
+
+
+## nfs
+nfs_server="${network_private%.*}.${host[master]}"
+nfs_mount_name='pv0001'
+nfs_mount="/srv/nfs/${nfs_mount_name}"

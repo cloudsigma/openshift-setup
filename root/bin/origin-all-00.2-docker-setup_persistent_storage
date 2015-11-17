@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+source ~/.os-setuprc &> /dev/null || echo "I can't read ~/.os-setuprc. Will not continue..." && exit 1
+
+# stop docker
+systemctl stop docker.service
+
+# configure
+cat << EOF > /etc/sysconfig/docker-storage-setup
+DEVS=${docker_persistent_storage_device}
+VG=docker-vg
+EOF
+
+# wipe
+vgremove -f docker-vg
+wipefs -a ${docker_persistent_storage_device}
+sgdisk -Z ${docker_persistent_storage_device}
+rm -fr /var/lib/docker/*
+
+# create
+docker-storage-setup
+
+# start
+systemctl start docker.service
+
+# verify
+cat /etc/sysconfig/docker-storage
+lvs

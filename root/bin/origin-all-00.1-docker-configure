@@ -3,6 +3,6 @@
 # don't run this one for now
 exit 0
 
-source ~/.os-setuprc &> /dev/null || echo "I can't read ~/.os-setuprc. Will not continue..." && exit 1
+source ~/.os-setuprc &> /dev/null || ( echo "I can't read ~/.os-setuprc. Will not continue..." && exit 1 )
 
 sed -i "s@^OPTIONS=.*@OPTIONS='--selinux-enabled --insecure-registry ${network_private}'@" /etc/sysconfig/docker

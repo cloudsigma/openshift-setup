@@ -12,10 +12,9 @@ To start installing, execute the following on each server destined to be an Open
 .. code:: bash
 
     yum install -y git
-    git clone git@github.com:cloudsigma/openshift-setup.git
-    cd openshift-setup.git
+    git clone https://github.com/cloudsigma/openshift-setup.git
+    cd openshift-setup
     GIT_WORK_TREE="/" git checkout -f
-
 
 Then, the master server, take your time to edit ``/root/.os-setuprc``. This file contains the settings for the openshift
 setup scripts. It is essential to write the correct values there.

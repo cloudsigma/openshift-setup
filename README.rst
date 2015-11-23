@@ -6,6 +6,8 @@ To start using this script, you need to have:
 
 * CenOS 7 x86_64 (3x)
 * 2 NICs (public and private)
+* All hosts should have DNS A records pointing at them
+* A wildcard A record pointing at the host with the service router (*.apps.cloudsigma.com)
 
 To start installing, execute the following on each server destined to be an OpenShift master/node: 
 

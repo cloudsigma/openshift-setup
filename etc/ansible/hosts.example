@@ -25,4 +25,4 @@ host1.openshift.cloudsigma.com openshift_ip=192.168.77.11
 host1.openshift.cloudsigma.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}" openshift_ip=192.168.77.11
 host2.openshift.cloudsigma.com openshift_node_labels="{'region': 'EU', 'zone': 'ZRH'}" openshift_ip=192.168.77.12
 host3.openshift.cloudsigma.com openshift_node_labels="{'region': 'EU', 'zone': 'ZRH'}" openshift_ip=192.168.77.13
-host4.openshift.cloudsigma.com openshift_node_labels="{'region': 'EU', 'zone': 'ZRH'}" openshift_ip=192.168.77.14
+host4.openshift.cloudsigma.com openshift_node_labels="{'region': 'EU', 'zone': 'ZRH', 'type': 'router'}" openshift_ip=192.168.77.14

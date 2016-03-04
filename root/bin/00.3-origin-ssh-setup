@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+ssh-keygen -b 8192 -N '' -f /root/.ssh/id_rsa
+
+for h in 192.168.77.{11..14}; do
+    ssh-copy-id -i /root/.ssh/id_rsa.pub $h;
+done

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+htpasswd -bc /etc/openshift/openshift-passwd renich GanrirnikMophcas0DroQuowemjupp
+htpasswd -b /etc/openshift/openshift-passwd support 5QuifCabAchlaiWejivPeotjecOcwa

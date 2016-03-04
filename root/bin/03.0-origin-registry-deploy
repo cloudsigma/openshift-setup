@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# create exports
+cat << 'EOF' > /etc/exports
+/srv/nfs/pv0001 *(rw,all_squash)
+EOF
+
+mkdir -p /srv/nfs/pv0001
+chown -R nfsnobody:nfsnobody /srv/nfs/pv0001
+chmod 777 /srv/nfs/pv0001
+
+exportfs -a
+exportfs -r
+
+#for h in 192.168.77.{11..14}; do
+#    ssh -t root@$h 'setsebool -P virt_use_nfs=1'
+#done
+
+# register
+oc create -f ~/lib/pv0001.yaml
+
+# deploy registry
+cd /etc/origin/master
+oadm registry -n default --config=admin.kubeconfig --credentials=openshift-registry.kubeconfig
+
+# storage for registry
+oc volume deploymentconfigs/docker-registry --add --overwrite --name=registry-storage --mount-path=/registry \
+    --source='{"nfs":{"server": "192.168.77.11", "path": "/srv/nfs/pv0001"}}'

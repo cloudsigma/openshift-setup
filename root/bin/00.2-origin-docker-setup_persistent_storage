@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# stop docker
+systemctl stop docker.service
+
+
+# configure
+cat <<EOF > /etc/sysconfig/docker-storage-setup
+DEVS=/dev/vdb
+VG=docker-vg
+EOF
+
+# wipe
+vgremove -f docker-vg
+wipefs -a /dev/vdb
+sgdisk -Z /dev/vdb
+rm -fr /var/lib/docker/*
+
+# create
+docker-storage-setup
+
+# start
+systemctl start docker.service
+
+# verify
+cat /etc/sysconfig/docker-storage
+lvs

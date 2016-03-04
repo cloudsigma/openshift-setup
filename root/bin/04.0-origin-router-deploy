@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# create user
+echo '{"kind":"ServiceAccount","apiVersion":"v1","metadata":{"name":"router"}}' | oc create -f -
+
+# deploy router
+oadm router --credentials /etc/origin/master/openshift-router.kubeconfig --service-account router

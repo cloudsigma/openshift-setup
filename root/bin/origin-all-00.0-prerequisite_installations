@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion docker gdisk
-yum -y upgrade

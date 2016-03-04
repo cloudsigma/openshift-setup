@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# deploy router
-oadm router --credentials /etc/origin/master/openshift-router.kubeconfig --service-account router --selector='type=router'

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-htpasswd -bc /etc/openshift/openshift-passwd renich GanrirnikMophcas0DroQuowemjupp
-htpasswd -b /etc/openshift/openshift-passwd support 5QuifCabAchlaiWejivPeotjecOcwa
+htpasswd -bc /etc/origin/openshift-passwd renich GanrirnikMophcas0DroQuowemjupp
+htpasswd -b /etc/origin/openshift-passwd support 5QuifCabAchlaiWejivPeotjecOcwa
